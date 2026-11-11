@@ -1,0 +1,51 @@
+name: CS-PHOC Phase A - independent FAIRmorph validation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  reference-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout validation repository
+        uses: actions/checkout@v4
+      - name: Checkout pinned FAIRmorph Engine
+        uses: actions/checkout@v4
+        with:
+          repository: FAIRmorph/fairmorph-engine
+          ref: c84b6f87585bab1237d6383cd3a47311f57250c2
+          path: dependencies/fairmorph-engine
+          persist-credentials: false
+      - name: Checkout pinned CS-PHOC originals
+        uses: actions/checkout@v4
+        with:
+          repository: us-amlr/cs-phoc
+          ref: 64f0b77e631c711c681306bbb56a7636ae91a471
+          path: dependencies/cs-phoc
+          persist-credentials: false
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned Engine
+        run: python -m pip install -e dependencies/fairmorph-engine
+      - name: Run independent technical validation
+        run: python scripts/run_cs_phoc.py --upstream dependencies/cs-phoc --project validation-output/cs-phoc.fairmorph
+      - name: Reject executable scripts inside generated FAIRmorph project
+        shell: bash
+        run: |
+          if find validation-output/cs-phoc.fairmorph -type f \( -name '*.py' -o -name '*.sh' -o -name '*.ps1' -o -name '*.js' -o -name '*.ts' \) | grep -q .; then
+            echo "::error::Executable file found inside generated FAIRmorph project"
+            exit 1
+          fi
+      - name: Upload metadata evidence only (not source data)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cs-phoc-phase-a-evidence
+          path: artifacts/phase-a-result.json
+          retention-days: 14
