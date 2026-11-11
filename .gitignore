@@ -1,0 +1,10 @@
+# Generated FAIRmorph projects and evidence
+validation-output/
+artifacts/
+dependencies/
+*.fairmorph/
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.DS_Store
