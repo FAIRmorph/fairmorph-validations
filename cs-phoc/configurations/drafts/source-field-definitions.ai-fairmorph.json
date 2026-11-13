@@ -274,7 +274,7 @@
         "review_status": "unreviewed",
         "definition_source": "suggested",
         "description": "Aggregated count of adult female phocid individuals in the documented source survey context.",
-        "counting_unit": "individuals",
+        "counting_unit": "individual",
         "aggregation_level": "source survey window × location group × species × original age/sex category",
         "value_semantics": {
           "missing_values": [
@@ -303,7 +303,7 @@
         "review_status": "unreviewed",
         "definition_source": "suggested",
         "description": "Aggregated count of adult male phocid individuals in the documented source survey context.",
-        "counting_unit": "individuals",
+        "counting_unit": "individual",
         "aggregation_level": "source survey window × location group × species × original age/sex category",
         "value_semantics": {
           "missing_values": [
@@ -332,7 +332,7 @@
         "review_status": "unreviewed",
         "definition_source": "suggested",
         "description": "Aggregated count of adult phocid individuals whose sex was not determined in the documented source survey context.",
-        "counting_unit": "individuals",
+        "counting_unit": "individual",
         "aggregation_level": "source survey window × location group × species × original age/sex category",
         "value_semantics": {
           "missing_values": [
@@ -361,7 +361,7 @@
         "review_status": "unreviewed",
         "definition_source": "suggested",
         "description": "Aggregated count of juvenile female phocid individuals in the documented source survey context.",
-        "counting_unit": "individuals",
+        "counting_unit": "individual",
         "aggregation_level": "source survey window × location group × species × original age/sex category",
         "value_semantics": {
           "missing_values": [
@@ -390,7 +390,7 @@
         "review_status": "unreviewed",
         "definition_source": "suggested",
         "description": "Aggregated count of juvenile male phocid individuals in the documented source survey context.",
-        "counting_unit": "individuals",
+        "counting_unit": "individual",
         "aggregation_level": "source survey window × location group × species × original age/sex category",
         "value_semantics": {
           "missing_values": [
@@ -419,7 +419,7 @@
         "review_status": "unreviewed",
         "definition_source": "suggested",
         "description": "Aggregated count of juvenile phocid individuals whose sex was not determined in the documented source survey context.",
-        "counting_unit": "individuals",
+        "counting_unit": "individual",
         "aggregation_level": "source survey window × location group × species × original age/sex category",
         "value_semantics": {
           "missing_values": [
@@ -448,7 +448,7 @@
         "review_status": "unreviewed",
         "definition_source": "suggested",
         "description": "Aggregated count of pups younger than one year, with sexes combined, in the documented source survey context.",
-        "counting_unit": "individuals",
+        "counting_unit": "individual",
         "aggregation_level": "source survey window × location group × species × original age/sex category",
         "value_semantics": {
           "missing_values": [
@@ -477,7 +477,7 @@
         "review_status": "unreviewed",
         "definition_source": "suggested",
         "description": "Aggregated count of female phocid individuals with undetermined age class in the documented source survey context.",
-        "counting_unit": "individuals",
+        "counting_unit": "individual",
         "aggregation_level": "source survey window × location group × species × original age/sex category",
         "value_semantics": {
           "missing_values": [
@@ -506,7 +506,7 @@
         "review_status": "unreviewed",
         "definition_source": "suggested",
         "description": "Aggregated count of male phocid individuals with undetermined age class in the documented source survey context.",
-        "counting_unit": "individuals",
+        "counting_unit": "individual",
         "aggregation_level": "source survey window × location group × species × original age/sex category",
         "value_semantics": {
           "missing_values": [
@@ -535,7 +535,7 @@
         "review_status": "unreviewed",
         "definition_source": "suggested",
         "description": "Aggregated count of phocid individuals with both age class and sex undetermined in the documented source survey context.",
-        "counting_unit": "individuals",
+        "counting_unit": "individual",
         "aggregation_level": "source survey window × location group × species × original age/sex category",
         "value_semantics": {
           "missing_values": [
