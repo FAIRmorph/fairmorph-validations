@@ -87,6 +87,12 @@ jobs:
             echo "::error::Executable file found inside generated FAIRmorph project"
             exit 1
           fi
+      - name: Upload final format/content audit report only
+        uses: actions/upload-artifact@v4
+        with:
+          name: cs-phoc-c4-audit-report
+          path: validation-output/cs-phoc-final-content-audit.json
+          retention-days: 14
       - name: Upload metadata evidence only (not source data)
         uses: actions/upload-artifact@v4
         with:
