@@ -98,6 +98,39 @@ def validate_field_drafts(project, resources):
     for role in ("events", "counts"):
         if evidence["source_resource_ids"][role] != resources[role]["id"]:
             raise ValueError(f"Field drafts bind to different {role} resource")
+    catalog = project / "catalog/catalog.sqlite"
+    with sqlite3.connect(f"file:{catalog.resolve()}?mode=ro", uri=True) as con:
+        total = con.execute("SELECT COUNT(*) FROM current_field_definitions").fetchone()[0]
+        if total != 23:
+            raise ValueError("Expected exactly 23 current registry definitions")
+        seen = set()
+        for field in evidence["fields"]:
+            field_id, revision_id = field["source_field_id"], field["revision_id"]
+            if field_id in seen:
+                raise ValueError("Repeated field in Phase B.4 evidence")
+            seen.add(field_id)
+            row = con.execute(
+                "SELECT d.content_json, d.content_sha256 FROM current_field_definitions c "
+                "JOIN field_definition_revisions d ON d.revision_id = c.revision_id "
+                "WHERE c.source_field_id=? AND c.revision_id=?",
+                (field_id, revision_id),
+            ).fetchone()
+            if row is None or row[1] != field["content_sha256"]:
+                raise ValueError("Phase B.4 revision evidence differs from active Engine registry")
+            definition = json.loads(row[0])
+            if (
+                definition.get("language") != "en"
+                or definition.get("review_status") != "unreviewed"
+                or definition.get("semantic_status") != "partially_defined"
+                or "AI Description — added by FAIRmorph" not in definition.get("notes", "")
+            ):
+                raise ValueError("Unexpected registered field semantics or attribution")
+            reviews = con.execute(
+                "SELECT COUNT(*) FROM field_definition_reviews WHERE revision_id=?",
+                (revision_id,),
+            ).fetchone()[0]
+            if reviews:
+                raise ValueError("A registered source field has a separate review; do not silently treat it as an unreviewed PoC draft")
     return sha(file)
 
 
