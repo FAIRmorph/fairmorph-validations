@@ -36,6 +36,34 @@ jobs:
         run: python -m pip install -e dependencies/fairmorph-engine
       - name: Run independent technical validation
         run: python scripts/run_cs_phoc.py --upstream dependencies/cs-phoc --project validation-output/cs-phoc.fairmorph
+      - name: Register Phase B field drafts in local CI project
+        run: |
+          python scripts/register_cs_phoc_field_drafts.py --project validation-output/cs-phoc.fairmorph
+          python scripts/register_cs_phoc_field_drafts.py --project validation-output/cs-phoc.fairmorph --apply
+      - name: C1-C4 test exports from verified RUN/2
+        shell: bash
+        run: |
+          RUN_ID=$(python -c 'import json; print(json.load(open("artifacts/phase-a-result.json"))["run_id"])')
+          python scripts/export_cs_phoc_test_formats.py \
+            --project validation-output/cs-phoc.fairmorph \
+            --run-id "$RUN_ID" \
+            --output validation-output/cs-phoc-test-exports
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("validation-output/cs-phoc-test-exports/test-report.json")
+          report = json.loads(p.read_text(encoding="utf-8"))
+          assert report["status"] == "passed"
+          assert report["publication_ready"] is False
+          assert report["cell_by_cell_run_match"] is True
+          assert report["dwca_meta_xsd_validated"] is True
+          assert report["derived_rows"] == {
+              "events": 536, "occurrences": 16940,
+              "pangaea_tsv": 16940, "geojson_features": 536
+          }
+          assert report["count_sum"] == 79232
+          assert report["explicit_zero_count_values"] == 11599
+          PY
       - name: Reject executable scripts inside generated FAIRmorph project
         shell: bash
         run: |
