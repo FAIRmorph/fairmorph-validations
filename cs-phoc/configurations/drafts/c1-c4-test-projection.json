@@ -1,0 +1,111 @@
+{
+  "schema_version": "fairmorph.cs-phoc.test-projection/1",
+  "status": "test_only_not_for_publication",
+  "description_provenance": "AI Description — added by FAIRmorph; scientific PoC interpretation, not authored or endorsed by CS-PHOC source owners.",
+  "source_commit": "64f0b77e631c711c681306bbb56a7636ae91a471",
+  "source_doi": "https://doi.org/10.48361/gklk1u",
+  "method_doi": "https://doi.org/10.1038/s41597-024-03744-9",
+  "source_sha256": {
+    "events": "4362ae650cb72cc74901f7719920db5c8bbcfdc2ee09842595d04bf5e587bddc",
+    "counts": "be4a28aa5036dea103e9e6bbc6af5fef13d80354ef2750e0960bf78e320c3545"
+  },
+  "source_field_draft_label": "AI Description — added by FAIRmorph",
+  "expected": {
+    "source_events": 322,
+    "source_counts": 2144,
+    "events": 536,
+    "occurrences": 16940,
+    "zeros": 11599,
+    "sum": 79232
+  },
+  "sites": {
+    "Core census locations": {
+      "suffix": "1",
+      "longitude": -60.77,
+      "latitude": -62.47,
+      "locality": "Cape Shirreff, Livingston Island",
+      "coordinate_uncertainty_m": 2650
+    },
+    "Punta San Telmo": {
+      "suffix": "2",
+      "longitude": -60.808,
+      "latitude": -62.4835,
+      "locality": "Punta San Telmo, Cape Shirreff, Livingston Island",
+      "coordinate_uncertainty_m": 2650
+    }
+  },
+  "categories": {
+    "ad_female_count": {
+      "stage": "adult",
+      "sex": "female",
+      "stage_code": 1,
+      "sex_code": 1
+    },
+    "ad_male_count": {
+      "stage": "adult",
+      "sex": "male",
+      "stage_code": 1,
+      "sex_code": 2
+    },
+    "ad_unk_count": {
+      "stage": "adult",
+      "sex": "indeterminate",
+      "stage_code": 1,
+      "sex_code": 3
+    },
+    "juv_female_count": {
+      "stage": "juvenile",
+      "sex": "female",
+      "stage_code": 2,
+      "sex_code": 1
+    },
+    "juv_male_count": {
+      "stage": "juvenile",
+      "sex": "male",
+      "stage_code": 2,
+      "sex_code": 2
+    },
+    "juv_unk_count": {
+      "stage": "juvenile",
+      "sex": "indeterminate",
+      "stage_code": 2,
+      "sex_code": 3
+    },
+    "pup_count": {
+      "stage": "pup",
+      "sex": "",
+      "stage_code": 3,
+      "sex_code": 3
+    },
+    "unk_female_count": {
+      "stage": "unknown",
+      "sex": "female",
+      "stage_code": 4,
+      "sex_code": 1
+    },
+    "unk_male_count": {
+      "stage": "unknown",
+      "sex": "male",
+      "stage_code": 4,
+      "sex_code": 2
+    },
+    "unk_unk_count": {
+      "stage": "unknown",
+      "sex": "indeterminate",
+      "stage_code": 4,
+      "sex_code": 3
+    }
+  },
+  "caveats": [
+    "Coordinate points are representative location references, not animal positions or polygon boundaries.",
+    "A zero is a present standardized category count and may have been added during harmonization; zero is not proof of species absence outside that category and survey window.",
+    "A blank source category means no count value recorded and is omitted from long-form exports.",
+    "Pup categories aggregate all sexes; the occurrenceID code 3 does not mean source sex was determined to be unknown.",
+    "No external taxonomy lookup is performed; scientific names are preserved as source literals."
+  ],
+  "format_scope": {
+    "dwca": "Local Darwin Core Archive test package; no upstream publisher EML or endorsement.",
+    "pangaea": "UTF-8 tab-separated test data and separately documented parameter metadata; not a PANGAEA-submitted/curated dataset.",
+    "geojson": "RFC 7946 FeatureCollection of 536 representative site-event points with per-species aggregated source totals."
+  }
+}
