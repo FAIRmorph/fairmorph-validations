@@ -1,6 +1,6 @@
 # CS-PHOC: real-data validation case
 
-This is the **dataset-specific test fixture** for the FAIRmorph Engine v0.13 vertical proof of concept. Start with the [reviewer guide](../docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md) for the complete data-flow diagram, reproduction commands, expected values and audit interpretation. The general [repository README](../README.md) explains the separation between original research, the Engine, this validation code and the Workbench.
+This is the **dataset-specific test fixture** for the FAIRmorph Engine proof of concept. Start with the [reviewer guide](../docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md) for the complete data-flow diagram, reproduction commands, expected values and audit interpretation. The general [repository README](../README.md) explains the separation between original research, the Engine, this validation code and the Workbench.
 
 The original [US AMLR / CS-PHOC](https://github.com/us-amlr/cs-phoc/tree/64f0b77e631c711c681306bbb56a7636ae91a471) CSVs are **not** included here. The test checks them out at an immutable commit and imports them unchanged. See [source attribution and licensing](../THIRD-PARTY-NOTICES.md).
 
