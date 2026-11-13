@@ -1,6 +1,6 @@
 # FAIRmorph Validations
 
-> **Prototype Fund application proof of concept — not funded software.** FAIRmorph was developed solely to prepare an application to Germany’s [Prototype Fund](https://prototypefund.de/); no funding award, selection or official endorsement is claimed. This repository contains independent test evidence for a bounded dataset-specific case, not a published research dataset or general-purpose publisher. [Evidence and six-month development plan](https://www.fairmorph.org/guide/prototype-fund/).
+> **Prototype Fund application — [read FAIRmorph’s concrete application, independent evidence and six-month plan](https://www.fairmorph.org/guide/prototype-fund/) (German).** This repository supplies independently audited, dataset-specific PoC test evidence; it is neither an approved research publication nor a general-purpose publisher. FAIRmorph was developed solely to prepare the application; no funding award, selection or official endorsement is claimed. [Detailed technical evidence](https://www.fairmorph.org/guide/prototype-fund-technical/).
 
 **What this repository is:** An independent, reproducible test of how the **FAIRmorph Engine proof of concept** handles a real research dataset. It contains dataset-specific input declarations, checks, and evidence—not the FAIRmorph Engine or Workbench implementation, and not a released or approved scientific data product.
 
