@@ -1,4 +1,4 @@
-# CS-PHOC v0.13 — Final local test export content audit
+# CS-PHOC technical — Final local test export content audit
 
 **Status:** Independent, read-only PoC verification; test only, **not approved for publication**.  
 **Language:** English (en).  

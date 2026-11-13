@@ -1,4 +1,4 @@
-# FAIRmorph v0.13 — CS-PHOC Vertical PoC Closure Checkpoint
+# CS-PHOC technical validation closure
 
 **Checkpoint date:** 2026-11-13  
 **Repository:** [FAIRmorph/fairmorph-validations](https://github.com/FAIRmorph/fairmorph-validations)  
@@ -82,10 +82,10 @@ The original per-file SHA-256 values for **that particular local export** remain
 - **Framework boundaries:** The FAIRmorph Engine and Workbench contain no AI runtime requirement and were not extended with CS-PHOC-specific scientific code. Future user interviews should collect and review human/source-documented semantics under existing Engine contracts, not require AI assistance.
 - **External publication:** Formal scientific decisions, version-bound reviewed `defined` field semantics, final metadata, generic publication profiles and any required owner/publisher authorization remain separate future work.
 
-## 6. v0.13 closure decision and future scope
+## 6. Technical closure and future scope
 
 **Closure:** The **technical CS-PHOC vertical proof of concept is complete and validated** for the pinned original revision and local test-export workflow. **No scientific publication sign-off is asserted.**
 
-Keep the PoC bounded. Subsequent framework development should focus on existing contract-backed Workbench interviews for field semantics, reviewer decisions and mappings, then generic publication adapter wiring as a separate milestone. Do not extend v0.13 with unnecessary CS-PHOC special cases or permanent AI workflow features.
+Keep the PoC bounded. Subsequent framework development should focus on existing contract-backed Workbench interviews for field semantics, reviewer decisions and mappings, then generic publication adapter wiring as a separate milestone. Do not expand this bounded PoC with unnecessary CS-PHOC special cases or permanent AI workflow features.
 
 **Closure integrity:** This checkpoint records the status of PRs #1–#5 after merge. Their historical squash-merge commits and CI runs are permanent evidence; deletion of disposable merged review branch refs is a separate repository housekeeping action and does not affect the merged content.

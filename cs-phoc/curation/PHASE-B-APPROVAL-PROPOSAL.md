@@ -86,7 +86,7 @@ For an eventual Engine `SourceFieldDefinition`, the existing schema can represen
 
 The exact reviewer identity, authority, Engine-generated SourceFieldDefinition revision IDs, and actual approval events are **not recorded here and must not be fabricated**. The registry remains unchanged. No Entity/Relation/Occurrence/MeasurementOrFact profile or publication mapping is confirmed by this decision.
 
-## 5. Remaining next gate (minimal v0.13 PoC scope)
+## 5. Remaining next gate (minimal technical PoC scope)
 
 1. Preserve this English-only, clearly attributed text and cited source evidence.
 2. If registry field drafts are later requested, create 23 schema-valid draft records against actual imported resource IDs, retaining `language = "en"`, FAIRmorph AI attribution in `notes`, and source citations in `evidence_refs`.
