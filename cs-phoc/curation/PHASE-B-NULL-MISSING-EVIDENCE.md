@@ -68,9 +68,9 @@ Inspected the generic pipeline sources on Engine `main`:
 - Same module, lines 39–59 and 80–81: `table.filter/1` with `is_not_null` evaluates `pl.col(column).is_not_null()`.
 - [Technical pipeline draft](../configurations/drafts/pipeline-technical.json) unpivots the ten source count fields and filters `count_value` with `is_not_null`.
 
-**Expected behavior (end-to-end aggregate confirmed by local RUN/2; intermediate frame still unverified):** if Polars parses empty count tokens as null and `"0"` as numeric zero, the filter retains all **16,940** nonnull count cells, including **11,599** zero cells, and excludes **4,500** missing cells. The source token census establishes the expected values, and the user-supplied local RUN/2 summary now confirms the final output aggregates (Section 8).
+**Observed behavior:** the contributor-reported Polars 2.1.0 parser test (Section 9) confirms **21,440** unpivoted rows with **4,500** nulls, and **16,940** rows after `is_not_null`; explicit casting to `Int64` confirms **11,599** zeros, **5,341** positive values, and sum **79,232**. The separate Engine RUN/2 summary (Section 8) confirms matching final aggregates.
 
-**Unresolved runtime dependency:** Engine `pyproject.toml` declares `polars>=1.0.0` without an upper bound or exact version. The user has subsequently provided a successful local Engine RUN/2 result (Section 8), but the installed Polars version, intermediate frame metrics, environment lock and independent inspection of the RUN/2 manifest remain unrecorded.
+**Runtime dependency and remaining limitations:** Engine `pyproject.toml` declares `polars>=1.0.0` without an upper bound or exact version. The tested local Polars version is **2.1.0**. The standalone parser test has confirmed intermediate counts; an environment lock, direct inspection of the full RUN/2 manifest and row-level provenance checks remain outstanding.
 
 ## 6. Required runtime evidence before confirming parser compatibility
 
@@ -83,13 +83,13 @@ Inspected the generic pipeline sources on Engine `main`:
 
 ## 7. Decision status
 
-- **B-06 / S-B-02 explicit zero:** SOURCE RULE SUPPORTED; FINAL RUN AGGREGATES PASSED; SCIENTIFIC APPROVAL OPEN.
-- **B-07 / S-B-03 blank/missing:** SOURCE RULE SUPPORTED; FINAL RUN AGGREGATES PASSED; INTERMEDIATE PARSER CHECK OPEN; SCIENTIFIC APPROVAL OPEN.
+- **B-06 / S-B-02 explicit zero:** SOURCE RULE SUPPORTED; LOCAL PARSER AND FINAL RUN AGGREGATES PASSED; SCIENTIFIC APPROVAL OPEN.
+- **B-07 / S-B-03 blank/missing:** SOURCE RULE SUPPORTED; LOCAL PARSER AND FINAL RUN AGGREGATES PASSED; SCIENTIFIC APPROVAL OPEN.
 - No `SourceFieldDefinition` registered.
 - No Entity, Occurrence or MeasurementOrFact mapping approved.
 - No Engine or Workbench expansion proposed.
 
-**Next gate:** Record installed Polars version, inspect the pre-filter frame and provenance cases, then request explicit scientific approval for the field-level semantic definitions.
+**Next gate:** Draft individual SourceFieldDefinitions with documented zero/missing semantics, review selected row-level provenance cases and approval ownership, and obtain explicit scientific sign-off before registry publication.
 
 ## 8. User-reported local Phase A RUN/2 evidence (2026-11-13)
 
@@ -115,3 +115,25 @@ A contributor executed `python scripts/run_cs_phoc.py --upstream dependencies/cs
 - Package ID: `cs-phoc-manuscript-sources`
 
 **Interpretation:** The actual Engine end-to-end result preserves the expected zero count and nonmissing count total after filter and join. This is strong technical evidence for the exercised input and environment. It does not independently expose the pre-filter Polars null statistics, actual Polars package version, or full manifest details, and it does **not** constitute scientific sign-off.
+
+## 9. User-reported standalone Polars parser regression (2026-11-13)
+
+The contributor additionally executed the corrected **read-only** standalone test using `pl.read_csv` on the unmodified pinned counts CSV, `DataFrame.unpivot` over the ten explicit count fields, `is_not_null`, and a **strict** cast of the retained `count_value` series to `Int64`. All seven baseline assertions passed.
+
+```text
+Polars: 2.1.0
+Count dtype: String
+Vor Filter: 21440
+Null vor Filter: 4500
+Nach Filter: 16940
+Null nach Filter: 0
+Explizite Nullen: 11599
+Positive Werte: 5341
+Count-Summe: 79232
+
+PASS: CS-PHOC Null-/Missing-Validierung erfolgreich
+```
+
+**Interpretation:** Polars 2.1.0 represents the mixed unpivoted `count_value` column as `String`; direct comparison with integer `0` throws a type mismatch and is **not** a scientific or Engine transformation failure. The fixed validation casts `count_value` using `cast(pl.Int64, strict=True)` before checking numeric zero/positive/sum. The `strict=True` cast passing is evidence that the 16,940 retained strings were all parseable as signed 64-bit integers in the tested environment. All 4,500 source blank cells correspond to nulls before the filter; no nulls remain afterward.
+
+This user-reported local regression is consistent with the separate successful local RUN/2 summary (Section 8), but it is **not** an independent scientific approval, a version pin for every future environment, or proof about field-level target mappings. Original CSVs, Engine and Workbench are unchanged.
