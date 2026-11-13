@@ -1,6 +1,6 @@
 # CS-PHOC — Scientific Curation Baseline, **Not an Engine Approval**
 
-> **Historical context:** This document records the initial pre-registration curation questions. Its table statuses and outstanding decisions describe that initial stage; they are **not current registration status**. Subsequently, 23 English FAIRmorph AI-assisted field-description drafts were registered as **unreviewed** Engine revisions. The technical v0.13 test exports were validated, but no formal field or mapping approval was recorded. See [Phase B Registry Drafts](../validation/PHASE-B-REGISTRY-DRAFTS.md) and the [v0.13 closure checkpoint](../validation/V0.13-VERTICAL-POC-CLOSURE.md). The AI-assisted descriptions are not authored, reviewed, approved, or endorsed by the original CS-PHOC authors or owners.
+> **Historical context:** This document records the initial pre-registration curation questions. Its table statuses and outstanding decisions describe that initial stage; they are **not current registration status**. Subsequently, 23 English FAIRmorph AI-assisted field-description drafts were registered as **unreviewed** Engine revisions. The technical technical test exports were validated, but no formal field or mapping approval was recorded. See [Phase B Registry Drafts](../validation/PHASE-B-REGISTRY-DRAFTS.md) and the [technical closure checkpoint](../validation/CS-PHOC-TECHNICAL-CLOSURE.md). The AI-assisted descriptions are not authored, reviewed, approved, or endorsed by the original CS-PHOC authors or owners.
 
 ## Sources
 
