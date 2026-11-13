@@ -68,9 +68,9 @@ Inspected the generic pipeline sources on Engine `main`:
 - Same module, lines 39–59 and 80–81: `table.filter/1` with `is_not_null` evaluates `pl.col(column).is_not_null()`.
 - [Technical pipeline draft](../configurations/drafts/pipeline-technical.json) unpivots the ten source count fields and filters `count_value` with `is_not_null`.
 
-**Expected behavior, subject to runtime confirmation:** if Polars parses empty count tokens as null and `"0"` as numeric zero, the filter retains all **16,940** nonnull count cells, including **11,599** zero cells, and excludes **4,500** missing cells. The source token census proves the expected target counts but **does not prove actual Engine output**.
+**Expected behavior (end-to-end aggregate confirmed by local RUN/2; intermediate frame still unverified):** if Polars parses empty count tokens as null and `"0"` as numeric zero, the filter retains all **16,940** nonnull count cells, including **11,599** zero cells, and excludes **4,500** missing cells. The source token census establishes the expected values, and the user-supplied local RUN/2 summary now confirms the final output aggregates (Section 8).
 
-**Unresolved runtime dependency:** Engine `pyproject.toml` declares `polars>=1.0.0` without an upper bound or exact version. A complete parser claim requires testing the actual installed Polars version and the real Engine RUN path. No Polars runtime execution, environment lock verification, actual resource imports, or RUN/2 manifest verification was performed in this review.
+**Unresolved runtime dependency:** Engine `pyproject.toml` declares `polars>=1.0.0` without an upper bound or exact version. The user has subsequently provided a successful local Engine RUN/2 result (Section 8), but the installed Polars version, intermediate frame metrics, environment lock and independent inspection of the RUN/2 manifest remain unrecorded.
 
 ## 6. Required runtime evidence before confirming parser compatibility
 
@@ -83,10 +83,35 @@ Inspected the generic pipeline sources on Engine `main`:
 
 ## 7. Decision status
 
-- **B-06 / S-B-02 explicit zero:** SOURCE RULE SUPPORTED; RUNTIME VALIDATION OPEN; SCIENTIFIC APPROVAL OPEN.
-- **B-07 / S-B-03 blank/missing:** SOURCE RULE SUPPORTED; RUNTIME VALIDATION OPEN; SCIENTIFIC APPROVAL OPEN.
+- **B-06 / S-B-02 explicit zero:** SOURCE RULE SUPPORTED; FINAL RUN AGGREGATES PASSED; SCIENTIFIC APPROVAL OPEN.
+- **B-07 / S-B-03 blank/missing:** SOURCE RULE SUPPORTED; FINAL RUN AGGREGATES PASSED; INTERMEDIATE PARSER CHECK OPEN; SCIENTIFIC APPROVAL OPEN.
 - No `SourceFieldDefinition` registered.
 - No Entity, Occurrence or MeasurementOrFact mapping approved.
 - No Engine or Workbench expansion proposed.
 
-**Next gate:** Verify the concrete Polars/Engine runtime results, then request explicit scientific approval for the field-level semantic definitions.
+**Next gate:** Record installed Polars version, inspect the pre-filter frame and provenance cases, then request explicit scientific approval for the field-level semantic definitions.
+
+## 8. User-reported local Phase A RUN/2 evidence (2026-11-13)
+
+A contributor executed `python scripts/run_cs_phoc.py --upstream dependencies/cs-phoc --project validation-output/cs-phoc-phase-b.fairmorph` locally and supplied the following runner JSON summary. These are **user-reported runtime results** (not independently re-executed in this review); the runner reports `phase: "A"`, `status: "passed"`, and `scientific_approval: false`.
+
+| Metric | Reported | Baseline / expectation | Outcome |
+|---|---:|---:|---|
+| `long_rows` | 16940 | 16940 | match |
+| `explicit_zero_values` | 11599 | 11599 | match |
+| `count_sum` | 79232 | 79232 | match |
+| `unique_count_ids` | 2144 | 2144 | match |
+| `unique_joined_event_ids` | 322 | 322 | consistent with full 322-event coverage |
+| `null_count_values` | 0 | 0 | match |
+| `verified` | `verified` | `verified` | match |
+
+- Upstream revision: `64f0b77e631c711c681306bbb56a7636ae91a471`
+- Events source byte SHA-256: `4362ae650cb72cc74901f7719920db5c8bbcfdc2ee09842595d04bf5e587bddc`
+- Counts source byte SHA-256: `be4a28aa5036dea103e9e6bbc6af5fef13d80354ef2750e0960bf78e320c3545`
+- Event resource ID: `resource-events-4362ae650cb72cc74901f7719920db5c8bbcfdc2ee09842595d04bf5e587bddc`
+- Count resource ID: `resource-counts-be4a28aa5036dea103e9e6bbc6af5fef13d80354ef2750e0960bf78e320c3545`
+- Pipeline SHA-256: `7cc90dc2487c13c25e620b7c96403e1caa16457b4d98ab4881e26d8e25b5dbe5`
+- Run ID: `20261113T135729Z-3eb02546db55`
+- Package ID: `cs-phoc-manuscript-sources`
+
+**Interpretation:** The actual Engine end-to-end result preserves the expected zero count and nonmissing count total after filter and join. This is strong technical evidence for the exercised input and environment. It does not independently expose the pre-filter Polars null statistics, actual Polars package version, or full manifest details, and it does **not** constitute scientific sign-off.
