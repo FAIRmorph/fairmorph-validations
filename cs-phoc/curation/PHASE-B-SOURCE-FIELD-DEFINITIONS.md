@@ -1,10 +1,12 @@
 # CS-PHOC Phase B.2 — Source Field Definition Review Draft
 
-**Status:** DRAFT / UNREVIEWED / NOT SCIENTIFICALLY APPROVED  
+**Status:** USER-ACCEPTED TEXT FOR FAIRmorph PoC REVIEW / ENGINE REGISTRY UNREVIEWED / NO UPSTREAM APPROVAL  
 **Date:** 2026-11-13  
 **Scope:** All 23 original CSV columns (7 events + 16 counts)  
 **Source revision:** `us-amlr/cs-phoc@64f0b77e631c711c681306bbb56a7636ae91a471`  
 **Source identity:** events Git blob `d129fa00d10fa11caf5f2f0481681ea5c22cb8a6`; counts Git blob `d81e36792cad4de0108f7d0bcd0cef4e89d103a0`
+
+**Description language and attribution:** English (`en`). **Every descriptive or interpretive statement in this document is an “AI Description — added by FAIRmorph”** for a FAIRmorph test scenario, not text authored, confirmed or endorsed by the CS-PHOC authors/owners. Source citations are evidence, not authorship. The user's acceptance on 2026-11-13 applies to the bounded field descriptions and caveats, not to source-owner endorsement or immutable Engine review events. See [English AI description / user acceptance](PHASE-B-APPROVAL-PROPOSAL.md).
 
 ## 1. Authoritative references and evidence grades
 
@@ -14,7 +16,7 @@
 - **TEST:** [Phase B null/missing evidence](PHASE-B-NULL-MISSING-EVIDENCE.md), incl. successful locally reported RUN/2 and Polars 2.1.0 parser checks
 - **ENGINE:** [Executable SourceFieldDefinition.schema.json](https://github.com/FAIRmorph/fairmorph-engine/blob/main/src/fairmorph_engine/contracts/SourceFieldDefinition.schema.json), plus [core/registry.py](https://github.com/FAIRmorph/fairmorph-engine/blob/main/src/fairmorph_engine/core/registry.py)
 
-**Reading guide:** A statement supported by SRC, PUB, RAW or TEST is a **documented fact** about the source or pipeline, **not** an approved FAIRmorph scientific interpretation. Every field still requires a separate explicit review event. Missing/zero entries for context fields must not inherit count-field semantics.
+**Reading guide:** A statement supported by SRC, PUB, RAW or TEST is source evidence, **not** upstream authorship of this AI-assisted interpretation. The FAIRmorph user has accepted the text for PoC review; formal registry approval events are not yet recorded. Missing/zero entries for context fields must not inherit count-field semantics.
 
 ## 2. Proposed fields — events.csv (7)
 
@@ -45,7 +47,7 @@
 
 ## 4. Proposed fields — ten explicit count columns
 
-All ten are source-described as **aggregated count of individual animals** for the corresponding survey window/location/species [SRC]. Source literals are empty or nonnegative integer tokens in the pinned CSV [RAW, TEST]. **Proposed** `counting_unit = "individuals"`, `aggregation_level = "survey window × source location × source species × age/sex category"`; approve only after responsible scientific review. No method, repeat-count exclusion, detection probability or sampling effort can be inferred from these tokens.
+All ten are source-described as **aggregated count of individual animals** for the corresponding survey window/location/species [SRC]. Source literals are empty or nonnegative integer tokens in the pinned CSV [RAW, TEST]. **User-accepted PoC description candidate** `counting_unit = "individuals"`, `aggregation_level = "survey window × source location × source species × age/sex category"`; formal registry approval remains a separate, revision-bound step. No method, repeat-count exclusion, detection probability or sampling effort can be inferred from these tokens.
 
 | Field | Documented category | Blank | Explicit zero | Positive | Individual review open |
 |---|---|---:|---:|---:|---|
@@ -62,7 +64,7 @@ All ten are source-described as **aggregated count of individual animals** for t
 
 **Common proposed `value_semantics` for each count field:**
 - `missing_values: [{"token":"","meaning":"No count data recorded for this specific category; not a recorded zero"}]` [SRC, RAW, TEST].
-- `zero_meaning: "true_zero"` **as a review candidate** for a performed count yielding zero individuals in that category [SRC]; do not silently substitute `absence` at an Occurrence or taxon level. PUB independently maps `individualCount == 0` to `occurrenceStatus = "absent"`, a **separate** publication rule.
+- `zero_meaning: "true_zero"` **as a user-accepted PoC review candidate** for a performed count yielding zero individuals in that category [SRC]; do not silently substitute `absence` at an Occurrence or taxon level. PUB independently maps `individualCount == 0` to `occurrenceStatus = "absent"`, a **separate** publication rule.
 - `zero_explanation`: "Explicit 0 is a recorded zero count for this source count category; it does not establish that other blank categories were surveyed."
 - No additional missing token beyond the observed blank is asserted.
 - Data type validation: strict `Int64` conversion of retained Long count values succeeded in the contributor's Polars **2.1.0** test. Long `count_value` is `String` after `unpivot`; downstream numeric inspection must cast explicitly [TEST]. This is technical evidence, not itself a semantic contract field.
@@ -74,7 +76,7 @@ All ten are source-described as **aggregated count of individual animals** for t
 The executable [SourceFieldDefinition v1.0.0 contract](https://github.com/FAIRmorph/fairmorph-engine/blob/main/src/fairmorph_engine/contracts/SourceFieldDefinition.schema.json) requires:
 `contract_version`, `dataset_id`, `source_resource_id`, `source_field_id`, `field_locator`, `semantic_status`, `review_status`, `definition_source`, `description` and `value_semantics`. It supports `counting_unit`, `unit`, `aggregation_level`, `evidence_refs`, `notes`, etc.; `additionalProperties: false` means arbitrary proposed keys must **not** be inserted into a Contract.
 
-For each of the **23 field instances** in a real FAIRmorph project, `define_field(project, resource_id, locator, definition)` constructs and checks dataset/resource/field IDs, column locators and canonical versioned content. An **unreviewed** draft should keep `review_status = "unreviewed"`; use `semantic_status = "partially_defined"` or `"unresolved"` for the remaining questions. Documented source provenance can use `definition_source = "source_documentation"`; source-supported statements and proposals must be distinguished in `description`/`notes`.
+For each of the **23 field instances** in a real FAIRmorph project, `define_field(project, resource_id, locator, definition)` constructs and checks dataset/resource/field IDs, column locators and canonical versioned content. A not-yet-reviewed Engine draft should keep `review_status = "unreviewed"`; use `semantic_status = "partially_defined"` or `"unresolved"` for the remaining questions. Because descriptions are AI-assisted FAIRmorph additions, use `definition_source = "suggested"`, `language = "en"` and include `"AI Description — added by FAIRmorph; not authored or endorsed by CS-PHOC owners."` in `notes`; link actual upstream evidence separately through `evidence_refs`.
 
 **Crucial:** `semantic_status = "defined"` must not be equated with approval. Scientific review is an explicit, separate revision-bound event (`review_field`), and approval requires substantive descriptions and complete semantics. Do not invent `reviewer_id`, `reviewed_at`, project identifiers, schema SHA-256 pins, or an approved mapping. The CSV file and registry source identities are different from count/entity projection identities.
 
@@ -104,7 +106,7 @@ This document is intentionally **not** a schema-valid 23-object payload; the Eng
 4. Create *unreviewed* definition revisions only when project-specific registration is deliberately authorized; this review file alone does not instantiate registry records.
 5. Keep entity/profile/relation mappings separate and unapproved until Phase C.
 
-**No scientific sign-off, Engine change, Workbench change, source-file change or registry write was performed by this document.**
+**The FAIRmorph user has accepted the bounded English AI descriptions for PoC review. No upstream endorsement, Engine review event, Engine change, Workbench change, source-file change or registry write was performed.**
 
 ## 8. Source-derived closure checks (2026-11-13)
 
