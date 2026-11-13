@@ -1,6 +1,6 @@
 # FAIRmorph Validations
 
-> **Prototype Fund (Germany) · Proof of concept — not production software.** FAIRmorph is an experimental open-source project for Germany’s [Prototype Fund](https://prototypefund.de/). These scripts validate one **dataset-specific technical example**; they are not a generic publisher, a completed ecological data product or a scientific approval.
+> **Prototype Fund application proof of concept — not funded software.** FAIRmorph was developed solely to prepare an application to Germany’s [Prototype Fund](https://prototypefund.de/); no funding award, selection or official endorsement is claimed. This repository contains independent test evidence for a bounded dataset-specific case, not a published research dataset or general-purpose publisher. [Evidence and six-month development plan](https://www.fairmorph.org/guide/prototype-fund/).
 
 **What this repository is:** An independent, reproducible test of how the **FAIRmorph Engine proof of concept** handles a real research dataset. It contains dataset-specific input declarations, checks, and evidence—not the FAIRmorph Engine or Workbench implementation, and not a released or approved scientific data product.
 
