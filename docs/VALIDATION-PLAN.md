@@ -1,46 +1,32 @@
-# FAIRmorph v0.13 validation plan
+# FAIRmorph real-data validation criteria
 
-## Purpose
+This document gives the **general evaluation criteria** behind the reference case. It does not define scientific decisions, Engine contracts, or the sequence of a private project conversation. For the **actual CS-PHOC evidence and exact reproduction commands**, use the [reviewer guide](CS-PHOC-REPRODUCTION-AND-RESULTS.md).
 
-Establish **separate, inspectable** evidence for (1) project integrity, (2) technical transformation correctness, and (3) approved scientific validity. The first two are necessary but not sufficient for the third.
+## Three different claims need three different kinds of evidence
 
-## Phase A — source identity and technical regression
+| Claim | Evidence required | Status for the pinned CS-PHOC test |
+| --- | --- | --- |
+| **Technical integrity** | Source byte identities, immutable project resources, reproducible Engine execution, verified RUN manifest and stable row-level values | **Passed** |
+| **Dataset-specific transformation accuracy** | Source-supported mapping rules; every source value checked against the actual export files; keys, nulls, zeros, arithmetic, geometry and file format validation | **Passed as a bounded test projection** |
+| **Scientific/publication approval** | Explicitly reviewed field semantics and mappings, responsible reviewer identity, version-pinned decisions, complete publication metadata and editorial/owner permissions when applicable | **Not granted; test exports only** |
 
-- Pin an upstream CS-PHOC revision and verify exact original Git object identities.
-- Import the unchanged CSV files into a fresh FAIRmorph project. Record Engine-generated SHA-256 object identities.
-- Register a technical-only DAG with actual resource IDs and use only existing operators.
-- Unpivot ten source count fields, preserve explicit zero counts while excluding truly blank fields, join using `event_id` with checked `m:1` cardinality.
-- Compare resulting row counts, unique source keys, explicit-zero counts and sums against `cs-phoc/validation/source-baseline.json`.
-- Verify project and RUN/2 integrity through `verify-project`. Store evidence, but **do not** assert scientific approval.
+A checksum or successful Engine RUN proves technical consistency, **not** scientific validity by itself. A validated archive `meta.xml` proves its technical structure, **not** that the data product has been accepted for publication.
 
-A technical pass is required for subsequent phases.
+## Required verification steps for a comparable new dataset
 
-## Phase B — source-field scientific review
+1. Identify **real external source data**, a fixed upstream revision, source licensing, known interpretation limits, and exact input byte hashes.
+2. Derive **independent source-baseline expectations** before comparing with the Engine (counts, unique identifiers, missing/zero values and source relationships).
+3. Run the **generic Engine** without embedding dataset-specific biological assumptions. Verify imported resource identities, pipeline declarations, source-to-result row-level consistency and immutable RUN artifacts.
+4. Record source-field semantics with evidence and limitations. Keep **draft acceptance** separate from formal version-bound **review/approval**.
+5. Document any **dataset-specific projection** with explicit target IDs, relationships, null/zero policy, coordinate meaning and provenance.
+6. Audit actual exported **bytes and records** independently of the export code, using exact comparisons and targeted edge cases; record output checksums.
+7. State which results belong to the **Engine**, which belong to the **validation harness**, and whether the **Workbench** was invoked.
+8. Declare **publication readiness separately**, without inferring scientific endorsement or broader framework generality from a local passing test.
 
-- Check source descriptions, the accompanying publication and documented data-generation scripts.
-- Review every relevant field: identity, measurement unit, domain, missing/zero meaning and provenance.
-- Resolve any discrepancies between the source's documentation and actual CSV headers.
-- Create versioned SourceFieldDefinitions; obtain explicit responsible-user approval.
-- Treat all unsupported assumptions as open review findings. Never infer semantic identities from column names alone.
+## Implementation boundary
 
-## Phase C — curated entity and relationship validation
+The [FAIRmorph Engine](https://github.com/FAIRmorph/fairmorph-engine) owns generic runtime, contracts, data identities, registries and review events. The [FAIRmorph Workbench](https://github.com/FAIRmorph/fairmorph-workbench) owns its user interface. This repository owns external dataset-specific test configurations, source-derived expectations, independent validation scripts and concise evidence.
 
-- Determine the justified mappings to SamplingEvent and MeasurementOrFact, and evaluate if/how Occurrence is needed.
-- Pin and approve exact schema IDs/versions/SHA-256 and mappings.
-- Confirm cardinality, joins, relationships, sampling-window identity and any published event splitting rules.
-- Test row-level reference cases, missing/zero semantics, sum invariants and value-change/audit expectations.
-- Validate against an independently calculated reference, with explanation for every discrepancy.
+All generated FAIRmorph projects, imported original source objects, large output datasets and runtime credentials remain out of Git by default. Source license terms are described in [third-party notices](../THIRD-PARTY-NOTICES.md).
 
-## Phase D — scientific sign-off and reproducible evidence
-
-- Record who reviewed which decisions, exact data/contract revision identifiers and acceptance criteria.
-- Reproduce RUNs from frozen originals and approved declarations.
-- Record expected-vs-observed summary, errors, scientific sign-off (when actually granted) and any limitations.
-- Do not treat a successful RUN or hash verification as proof of scientific correctness.
-
-## Repository boundaries
-
-- Engine/Workbench repositories hold generic code and shared contracts.
-- This repository holds dataset-specific test inputs, baseline values, validation procedures and evidence summaries.
-- Generated FAIRmorph projects, original imported objects and full local RUN directories remain outside Git history by default. Commit only carefully selected evidence/manifests and approved contractual records, avoiding unintended redistribution.
-- Source licensing is recorded per dataset in `THIRD-PARTY-NOTICES.md`.
+For the current dataset, the full audit passed but publication approval remains outstanding. See the [CS-PHOC interpretation and limitations](CS-PHOC-REPRODUCTION-AND-RESULTS.md#6-what-does-not-follow-from-a-pass).
