@@ -24,7 +24,7 @@
 | `season_name` | Field-season name (e.g. `2016/17`) [SRC] | Text; acceptable domain/format and time-zone/season convention need review |
 | `census_date_start` | Start date of census window [RAW, PUB] | Actual CSV header differs from SRC's `census_start_date`; date parsing/time precision require confirmation; do not silently alias |
 | `census_date_end` | End date of census window [RAW, PUB] | Actual CSV header differs from SRC's `census_end_date`; date parsing/time precision require confirmation |
-| `census_days` | Census duration in days [SRC, PUB] | Integer-like source token; SRC describes difference between dates, while PUB uses `sampleSizeValue` and `<=1` for days labeling; one-day same-start/end examples merit explicit inclusive/derived-duration review |
+| `census_days` | Census duration in days [SRC, PUB] | Integer-like source token; SRC describes difference between dates, while PUB uses `sampleSizeValue` and `<=1` for days labeling; all 322 source records match inclusive day count `(end - start) + 1`; source README's literal difference description is inconsistent; author/reviewer clarification remains open |
 | `surveyed_pst` | Whether Punta San Telmo was surveyed during window [SRC, PUB] | Literal CSV tokens `TRUE`/`FALSE` [RAW]; Boolean interpretation documented; no inference that FALSE proves absence of animals |
 | `research_program` | Surveying program `INACH` or `USAMLR` [SRC] | Text category; authority, full program names and possible future codes require confirmation |
 
@@ -105,3 +105,15 @@ This document is intentionally **not** a schema-valid 23-object payload; the Eng
 5. Keep entity/profile/relation mappings separate and unapproved until Phase C.
 
 **No scientific sign-off, Engine change, Workbench change, source-file change or registry write was performed by this document.**
+
+## 8. Source-derived closure checks (2026-11-13)
+
+A read-only review of the pinned upstream CSVs established:
+
+- All **322** event records match `census_days = (census_date_end - census_date_start).days + 1`: **303** same-day events report 1, **18** one-day date intervals report 2, and **1** two-day date interval reports 3; **0** exceptions. The upstream README describes a direct date difference, which would instead produce 0/1/2: this is a **documented semantic discrepancy**, not a license to silently amend the README or reinterpret the source. **SF-03 remains pending reviewer/author confirmation of intent.**
+- `surveyed_pst` has **214 TRUE** and **108 FALSE** records; **100 INACH** and **222 USAMLR** events. These are source observations, not approved controlled vocabularies.
+- Count locations are **1,288** Core rows and **856** Punta San Telmo rows. Each of the four literal scientific species names occurs **536** times; no duplicate `count_id`, no unmatched `counts.event_id`, no count rows with all ten component counts blank.
+- Cardinality cross-check: 322 × 4 Core count rows = 1,288; 214 × 4 PST count rows = 856. This is specific to the pinned source. It is **not** a generic engine or scientific completeness rule.
+- The upstream publication script's event split (Core `-1`, PST `-2` if surveyed) remains an **unapproved target projection**, independent of these source-data checks.
+
+**PoC boundary:** Do not add schema, mapping, UI or ingestion features for this review. All unresolved decisions remain clearly marked; use the existing independent RUN/2 runner for the final reproducibility gate.
