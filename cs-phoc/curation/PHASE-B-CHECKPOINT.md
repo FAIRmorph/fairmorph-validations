@@ -22,19 +22,23 @@
 - **SF-08–SF-10:** Target event splitting, Occurrence vs MeasurementOrFact, relationships, external taxonomy mapping and target profile pins — deferred to Phase C; no implicit approval.
 - **SF-11:** Formal, version-bound review record in Engine registry, only after decisions are made. No synthetic reviewer or approval event.
 
-## Minimal local completion gate
+## Local environment identification — verified from contributor output (2026-11-13)
 
-The previously executed `scripts/run_cs_phoc.py` is the authoritative PoC technical runner and already returned `status=passed` and `verified=verified`; **no repeat required merely to change documentation**. Before later scientific approval, capture these metadata from the same local environment (without modifying sources):
+The contributor ran the requested read-only environment commands in the same local environment used for the preceding validation checks and reported:
 
-```bash
-python -c 'import sys, polars as pl; print("Python:", sys.version.split()[0], "Polars:", pl.__version__)'
-git -C dependencies/fairmorph-engine rev-parse HEAD
-git -C dependencies/cs-phoc rev-parse HEAD
+```text
+Python: 3.14.4 Polars: 2.1.0
+c84b6f87585bab1237d6383cd3a47311f57250c2
+64f0b77e631c711c681306bbb56a7636ae91a471
 ```
 
-Expected upstream commit: `64f0b77e631c711c681306bbb56a7636ae91a471`. The Engine reference in validation CI is `c84b6f87585bab1237d6383cd3a47311f57250c2`; a different local Engine commit should be recorded, **not silently treated as equivalent**.
+- Local **Python 3.14.4** and **Polars 2.1.0** are now explicitly identified. The earlier successful local RUN/2 and read-only Polars parser regression are documented in [PHASE-B-NULL-MISSING-EVIDENCE.md](PHASE-B-NULL-MISSING-EVIDENCE.md).
+- Local Engine checkout is exactly the CI-pinned commit `c84b6f87585bab1237d6383cd3a47311f57250c2`.
+- Local upstream checkout is exactly the expected source commit `64f0b77e631c711c681306bbb56a7636ae91a471`.
+- The validation GitHub Actions workflow uses **Python 3.11**, so its green results and the local Python 3.14.4 result are evidence from **distinct interpreters**. Neither proves support for arbitrary runtime versions.
+- This is contributor-reported command output, not an independently executed local environment inspection by the reviewer. No further local rerun is required for the existing Phase-B technical checkpoint.
 
-Only if additional runtime evidence is requested, use an entirely new output directory with `scripts/run_cs_phoc.py`, and retain the resulting limited JSON evidence outside Git. Do not copy original CSVs or generated full projects into the validation repository.
+**Remaining non-technical gate:** responsible scientific review and explicit revision-bound approval of field semantics, followed by separately reviewed target Entity/Relation mappings and scientific end-to-end sign-off. The local version report does **not** authorize those steps.
 
 ## Completion boundary
 
