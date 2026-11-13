@@ -1,4 +1,4 @@
-# CS-PHOC v0.13 — Phase B Technical Review Checkpoint
+# CS-PHOC technical — Phase B Technical Review Checkpoint
 
 **Date:** 2026-11-13  
 **Review status:** SOURCE & TECHNICAL EVIDENCE COMPLETE; FAIRmorph USER ACCEPTED ATTRIBUTED ENGLISH DESCRIPTIONS; NO REGISTRY OR UPSTREAM APPROVAL  
@@ -53,4 +53,4 @@ c84b6f87585bab1237d6383cd3a47311f57250c2
 **Entity/relationship mappings and scientific publication sign-off:** not completed or registered.  
 **Engine/Workbench:** unchanged.
 
-This checkpoint is intentionally the smallest reproducible handover needed to finish the v0.13 vertical PoC scientifically after human approvals. It is **not** a claim that all scientific validation phases have passed.
+This checkpoint is intentionally the smallest reproducible handover needed to finish the technical vertical PoC scientifically after human approvals. It is **not** a claim that all scientific validation phases have passed.
