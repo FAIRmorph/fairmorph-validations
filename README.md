@@ -1,15 +1,19 @@
 # FAIRmorph Validations
 
-**What this repository is:** An independent, reproducible test of how the **FAIRmorph Engine v0.13 proof of concept** handles a real research dataset. It contains dataset-specific input declarations, checks, and evidence—not the FAIRmorph Engine or Workbench implementation, and not a released or approved scientific data product.
+> **Prototype Fund (Germany) · Proof of concept — not production software.** FAIRmorph is an experimental open-source project for Germany’s [Prototype Fund](https://prototypefund.de/). These scripts validate one **dataset-specific technical example**; they are not a generic publisher, a completed ecological data product or a scientific approval.
+
+**What this repository is:** An independent, reproducible test of how the **FAIRmorph Engine proof of concept** handles a real research dataset. It contains dataset-specific input declarations, checks, and evidence—not the FAIRmorph Engine or Workbench implementation, and not a released or approved scientific data product.
 
 **Current result:** The pinned **CS-PHOC** test case passed the technical validation and export-content audit. The output is **test-only** (`publication_ready: false`). This result establishes technical correctness for this specific dataset and transformation; it does **not** establish formal scientific approval, general-purpose export support, or a completed Workbench workflow.
 
 ## Start here
 
+- **[Installation and reproduction prerequisites](INSTALL.md)** — local Python setup, required pinned sources, and links to exact commands.
+
 - **[CS-PHOC: what was tested, what the results mean, and how to reproduce them](docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md)** — the primary guide for external reviewers.
 - [Original data and licensing](THIRD-PARTY-NOTICES.md).
 - [GitHub Actions](https://github.com/FAIRmorph/fairmorph-validations/actions/workflows/cs-phoc-phase-a.yml) — automated run of the same test chain, with a small audit-report artifact.
-- [Historical validation records](cs-phoc/validation/V0.13-VERTICAL-POC-CLOSURE.md) — detailed provenance and development checkpoint; not required to understand or reproduce the results.
+- [Historical validation records](cs-phoc/validation/CS-PHOC-TECHNICAL-CLOSURE.md) — detailed provenance and development checkpoint; not required to understand or reproduce the results.
 
 ## The actual research data vs. FAIRmorph
 
