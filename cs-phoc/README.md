@@ -1,32 +1,29 @@
-# CS-PHOC validation reference (FAIRmorph v0.13)
+# CS-PHOC: real-data validation case
 
-This directory contains **portable, unapproved project inputs** and source-derived expectations. It is not itself an initialized FAIRmorph project and contains no original CSV files.
+This is the **dataset-specific test fixture** for the FAIRmorph Engine v0.13 vertical proof of concept. Start with the [reviewer guide](../docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md) for the complete data-flow diagram, reproduction commands, expected values and audit interpretation. The general [repository README](../README.md) explains the separation between original research, the Engine, this validation code and the Workbench.
 
-## Source
+The original [US AMLR / CS-PHOC](https://github.com/us-amlr/cs-phoc/tree/64f0b77e631c711c681306bbb56a7636ae91a471) CSVs are **not** included here. The test checks them out at an immutable commit and imports them unchanged. See [source attribution and licensing](../THIRD-PARTY-NOTICES.md).
 
-Pinned upstream: https://github.com/us-amlr/cs-phoc/tree/64f0b77e631c711c681306bbb56a7636ae91a471
+## What is in this directory?
 
-Source CSVs:
-- `data/manuscript/cs-phoc-events.csv`: 322 event rows
-- `data/manuscript/cs-phoc-counts.csv`: 2,144 count rows
+| Path | Purpose |
+| --- | --- |
+| `configurations/drafts/pipeline-technical.json` | Generic Engine pipeline template. Resource IDs are placeholders until assigned by actual import. |
+| `configurations/drafts/dataset-metadata.json` | Unapproved dataset metadata draft. |
+| `configurations/drafts/source-field-definitions.ai-fairmorph.json` | 23 English AI-assisted source-field descriptions with limitations. **Drafts, not reviewed or approved.** |
+| `configurations/drafts/c1-c4-test-projection.json` | CS-PHOC-only Event/Occurrence, TSV and GeoJSON test transformation rules. |
+| `validation/source-baseline.json` | Source-derived expected row counts and Git blob identities; **not an Engine RUN result**. |
+| `curation/` | Source interpretation and evidence, including early review questions. Some filenames reflect historical development milestones. |
+| `validation/` | Detailed export/audit specifications and a historical closure record. |
 
-Upstream license: **CC0 1.0 Universal**. See [third-party notices](../THIRD-PARTY-NOTICES.md) for attribution and licensing.
+## At a glance
 
-## Technical files
+- **Real input:** 322 survey-window records, 2,144 count records; 16,940 nonblank category values, 4,500 blanks, 11,599 explicit zeros, sum 79,232.
+- **Engine actually demonstrated:** Unchanged source import, pinned and verifiable RUN/2 using generic unpivot/filter/join operators, and registration of 23 **unreviewed** SourceFieldDefinition drafts.
+- **This repository's test transformation:** 536 site-specific Events, 16,940 category Occurrences, 16,940 PANGAEA-preparation TSV rows and 536 representative GeoJSON site-event points.
+- **Independent audit:** All source-recorded cells versus exported tabular files, seven targeted samples, Event references and spatial values, ZIP integrity and TDWG `meta.xml` XSD.
+- **Not demonstrated:** Complete Workbench UI flow, generic Engine publication export, formally approved scientific field/mapping decisions or a publication-ready package.
 
-- `configurations/drafts/pipeline-technical.json`: generic `fairmorph.pipeline/1` DAG; original source resource IDs are **placeholders** and must be replaced with actual Engine-imported IDs before registration.
-- `configurations/drafts/dataset-metadata.json`: an **unapproved** dataset metadata draft.
-- `validation/source-baseline.json`: measured expectations from the pinned upstream CSV files, not results from an Engine RUN.
-- `curation/FIELD-REVIEW.md`: source-grounded field descriptions and unanswered scientific questions, **not** approved SourceFieldDefinition revisions.
+The AI-assisted descriptions are labelled **“AI Description — added by FAIRmorph”** and were not written, reviewed, approved or endorsed by the CS-PHOC authors/owners. FAIRmorph Engine and Workbench do not depend on AI.
 
-Technical DAG stages: `table.unpivot/1` ten count columns, `table.filter/1` null exclusion while preserving explicit zeros, and `table.join/1` to events with `m:1` on `event_id`.
-
-Expected baseline: 322 events; 2,144 counts; 16,940 nonblank long-count rows; 11,599 explicit zero cells; 4,500 blank source count cells; count sum 79,232. See JSON baseline for details.
-
-## Execute independently
-
-Follow the [root README](../README.md). The runner imports the pinned originals into a **new** local project, registers the technical DAG, executes a RUN/2 and verifies the generated project; it does not approve scientific semantics.
-
-## Scientific scope
-
-Before a scientific entity projection: review field meanings with the source description and domain experts; explicitly register and confirm SourceFieldDefinitions, exact schema/version/hash profile pins and any projection or relationship revisions. A passing technical regression is not approval of an entity mapping, a scientific publication or an export.
+To reproduce, follow **[the reviewer guide](../docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md#4-reproduce-the-full-outcome)**. Generated source objects, projects and export files must remain outside the repository history.
