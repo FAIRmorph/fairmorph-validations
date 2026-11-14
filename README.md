@@ -41,7 +41,6 @@ The tested publication-style transformation generates **536 location-specific ev
 | `scripts/audit_cs_phoc_test_exports.py` | Independent read-only audit of **already written** export files and seven source-grounded examples. |
 | `cs-phoc/configurations/drafts/` | Technical pipeline template, metadata draft, 23 attributed field definitions, and the publication-style test projection. |
 | `cs-phoc/validation/source-baseline.json` | Expectations measured independently from original source CSVs, **not** Engine results. |
-| `cs-phoc/curation/` | Preserved source-interpretation notes and historical review records in the repository; not the starting point for readers. |
 | [CS-PHOC validation results](cs-phoc/validation/README.md) | Accessible summary, test-format descriptions, and independent audit methodology and results. |
 | [Validation CI](https://github.com/FAIRmorph/fairmorph-validations/actions) | Full reproducibility test using pinned sources and an independent output audit. |
 | `docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md` | Step-by-step reproduction, outcome interpretation, evidence and known limitations. |
@@ -54,7 +53,7 @@ Requirements: **Python 3.11+**, Git, and access to the two public source reposit
 # After cloning the pinned Engine and original CS-PHOC sources:
 python scripts/run_cs_phoc.py --upstream dependencies/cs-phoc --project validation-output/cs-phoc.fairmorph
 python scripts/register_cs_phoc_field_drafts.py --project validation-output/cs-phoc.fairmorph --apply
-RUN_ID=$(python -c 'import json; print(json.load(open("artifacts/phase-a-result.json"))["run_id"])')
+RUN_ID=$(python -c 'import json,glob; files=glob.glob("artifacts/*-result.json"); assert len(files)==1, files; print(json.load(open(files[0]))["run_id"])')
 python scripts/export_cs_phoc_test_formats.py --project validation-output/cs-phoc.fairmorph --run-id "$RUN_ID" --output validation-output/cs-phoc-test-exports
 python scripts/audit_cs_phoc_test_exports.py --project validation-output/cs-phoc.fairmorph --exports validation-output/cs-phoc-test-exports --report validation-output/cs-phoc-final-content-audit.json
 ```
