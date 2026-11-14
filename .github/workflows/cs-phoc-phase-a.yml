@@ -14,6 +14,35 @@ jobs:
     steps:
       - name: Checkout validation repository
         uses: actions/checkout@v4
+      - name: Check public validation documentation
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          docs = [
+              Path("README.md"), Path("INSTALL.md"), Path("THIRD-PARTY-NOTICES.md"),
+              *Path("docs").rglob("*.md"), *Path("cs-phoc").rglob("*.md")
+          ]
+          legacy = re.compile(r"\bphase[ -]?[a-c](?:[ .-]|\b)|\b[bc][.][1-4]\b|\bc1-c4\b|\bphase-[abc]\b", re.I)
+          for document in docs:
+              text = document.read_text(encoding="utf-8")
+              assert not legacy.search(text), f"Historical stage label in {document}"
+              for link in re.findall(r"\]\(([^)]+)\)", text):
+                  target = link.split("#", 1)[0].strip()
+                  if target.endswith(".md") and not (document.parent / target).is_file():
+                      raise AssertionError(f"Broken documentation link in {document}: {link}")
+
+          landing = Path("cs-phoc/validation/README.md").read_text(encoding="utf-8")
+          for required in (
+              "Result: the bounded technical test passed",
+              "11,599", "4,500", "16,940",
+              "TEST-EXPORTS.md", "INDEPENDENT-CONTENT-AUDIT.md",
+              "CS-PHOC-REPRODUCTION-AND-RESULTS.md"
+          ):
+              assert required in landing, f"Missing landing page evidence: {required}"
+          print(f"Checked {len(docs)} public Markdown pages and their local links")
+          PY
       - name: Checkout pinned FAIRmorph Engine
         uses: actions/checkout@v4
         with:
