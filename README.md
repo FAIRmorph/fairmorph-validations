@@ -8,12 +8,11 @@
 
 ## Start here
 
-- **[Installation and reproduction prerequisites](INSTALL.md)** — local Python setup, required pinned sources, and links to exact commands.
-
-- **[CS-PHOC: what was tested, what the results mean, and how to reproduce them](docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md)** — the primary guide for external reviewers.
-- [Original data and licensing](THIRD-PARTY-NOTICES.md).
-- [GitHub Actions](https://github.com/FAIRmorph/fairmorph-validations/actions/workflows/cs-phoc-phase-a.yml) — automated run of the same test chain, with a small audit-report artifact.
-- [Historical validation records](cs-phoc/validation/CS-PHOC-TECHNICAL-CLOSURE.md) — detailed provenance and development checkpoint; not required to understand or reproduce the results.
+- **[Validation results and interpretation](cs-phoc/validation/README.md)** — concise outcome, checked values, limitations and a clear reading order.
+- **[Reproduce and inspect the evidence](docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md)** — original dataset, exact commands and complete audit interpretation.
+- [Test export formats](cs-phoc/validation/TEST-EXPORTS.md) and [independent content audit](cs-phoc/validation/INDEPENDENT-CONTENT-AUDIT.md) — how the files were generated and verified.
+- [Installation and reproduction prerequisites](INSTALL.md) and [original data/licensing](THIRD-PARTY-NOTICES.md).
+- [GitHub Actions](https://github.com/FAIRmorph/fairmorph-validations/actions) — automated reproduction runs and small metadata-only evidence artifacts.
 
 ## The actual research data vs. FAIRmorph
 
@@ -42,9 +41,8 @@ The tested publication-style transformation generates **536 location-specific ev
 | `scripts/audit_cs_phoc_test_exports.py` | Independent read-only audit of **already written** export files and seven source-grounded examples. |
 | `cs-phoc/configurations/drafts/` | Technical pipeline template, metadata draft, 23 attributed field definitions, and the publication-style test projection. |
 | `cs-phoc/validation/source-baseline.json` | Expectations measured independently from original source CSVs, **not** Engine results. |
-| `cs-phoc/curation/` | Source interpretation, evidence, limitations and historical review notes. |
-| `cs-phoc/validation/` | Detailed test/export specifications and historical checkpoint documents. |
-| `.github/workflows/cs-phoc-phase-a.yml` | Full reproducibility test in CI (the historical filename does **not** limit it to the initial stage). |
+| [CS-PHOC validation results](cs-phoc/validation/README.md) | Accessible summary, test-format descriptions, and independent audit methodology and results. |
+| [Validation CI](https://github.com/FAIRmorph/fairmorph-validations/actions) | Full reproducibility test using pinned sources and an independent output audit. |
 | `docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md` | Step-by-step reproduction, outcome interpretation, evidence and known limitations. |
 
 ## Reproduce
@@ -55,7 +53,7 @@ Requirements: **Python 3.11+**, Git, and access to the two public source reposit
 # After cloning the pinned Engine and original CS-PHOC sources:
 python scripts/run_cs_phoc.py --upstream dependencies/cs-phoc --project validation-output/cs-phoc.fairmorph
 python scripts/register_cs_phoc_field_drafts.py --project validation-output/cs-phoc.fairmorph --apply
-RUN_ID=$(python -c 'import json; print(json.load(open("artifacts/phase-a-result.json"))["run_id"])')
+RUN_ID=$(python -c 'import json,glob; files=glob.glob("artifacts/*-result.json"); assert len(files)==1, files; print(json.load(open(files[0]))["run_id"])')
 python scripts/export_cs_phoc_test_formats.py --project validation-output/cs-phoc.fairmorph --run-id "$RUN_ID" --output validation-output/cs-phoc-test-exports
 python scripts/audit_cs_phoc_test_exports.py --project validation-output/cs-phoc.fairmorph --exports validation-output/cs-phoc-test-exports --report validation-output/cs-phoc-final-content-audit.json
 ```

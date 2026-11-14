@@ -1,6 +1,6 @@
 # CS-PHOC: real-data validation case
 
-This is the **dataset-specific test fixture** for the FAIRmorph Engine proof of concept. Start with the [reviewer guide](../docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md) for the complete data-flow diagram, reproduction commands, expected values and audit interpretation. The general [repository README](../README.md) explains the separation between original research, the Engine, this validation code and the Workbench.
+This is the **dataset-specific test fixture** for the FAIRmorph Engine proof of concept. Start with the [validation results](validation/README.md), then consult the [reproduction guide](../docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md) for the complete data flow, exact commands and scientific caveats. The [repository overview](../README.md) explains the distinct roles of the original research, the Engine, this validation code and the Workbench.
 
 The original [US AMLR / CS-PHOC](https://github.com/us-amlr/cs-phoc/tree/64f0b77e631c711c681306bbb56a7636ae91a471) CSVs are **not** included here. The test checks them out at an immutable commit and imports them unchanged. See [source attribution and licensing](../THIRD-PARTY-NOTICES.md).
 
@@ -11,10 +11,9 @@ The original [US AMLR / CS-PHOC](https://github.com/us-amlr/cs-phoc/tree/64f0b77
 | `configurations/drafts/pipeline-technical.json` | Generic Engine pipeline template. Resource IDs are placeholders until assigned by actual import. |
 | `configurations/drafts/dataset-metadata.json` | Unapproved dataset metadata draft. |
 | `configurations/drafts/source-field-definitions.ai-fairmorph.json` | 23 English AI-assisted source-field descriptions with limitations. **Drafts, not reviewed or approved.** |
-| `configurations/drafts/c1-c4-test-projection.json` | CS-PHOC-only Event/Occurrence, TSV and GeoJSON test transformation rules. |
+| [Test export specification](validation/TEST-EXPORTS.md) | CS-PHOC-specific Event/Occurrence, TSV and GeoJSON transformation rules and technical limitations. |
 | `validation/source-baseline.json` | Source-derived expected row counts and Git blob identities; **not an Engine RUN result**. |
-| `curation/` | Source interpretation and evidence, including early review questions. Some filenames reflect historical development milestones. |
-| `validation/` | Detailed export/audit specifications and a historical closure record. |
+| [Validation results](validation/README.md) | Checked outcomes, export specifications, independent audit and interpretation limits. |
 
 ## At a glance
 

@@ -106,9 +106,6 @@ def main():
     (project / "validation/phase-a-result.json").write_text(
         json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    (project / "curation").mkdir()
-    shutil.copyfile(REFERENCE / "curation/FIELD-REVIEW.md", project / "curation/FIELD-REVIEW.md")
-
     evidence_dir = ROOT / "artifacts"
     evidence_dir.mkdir(exist_ok=True)
     (evidence_dir / "phase-a-result.json").write_text(
