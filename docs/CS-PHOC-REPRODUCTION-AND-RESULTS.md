@@ -116,7 +116,7 @@ python scripts/run_cs_phoc.py \
   --project validation-output/cs-phoc.fairmorph
 ```
 
-The runner rejects an existing destination and verifies imported source identities and the pipeline's recorded values. It writes a project-local `validation/phase-a-result.json` and a small root-level `artifacts/phase-a-result.json`. The machine-generated `run_id` must be **read from that output**, not guessed.
+The runner rejects an existing destination, verifies source identities and the pipeline values, and writes a project-local technical report plus a small JSON evidence file under `artifacts/`. The machine-generated `run_id` must be **read from the output**, not guessed.
 
 ### Register field-description drafts (no approvals)
 
@@ -133,7 +133,7 @@ The first call is read-only and should print `preflight_passed`. The second regi
 ### Generate three local **test** export formats
 
 ```bash
-RUN_ID=$(python -c 'import json; print(json.load(open("artifacts/phase-a-result.json"))["run_id"])')
+RUN_ID=$(python -c 'import json,glob; files=glob.glob("artifacts/*-result.json"); assert len(files)==1, files; print(json.load(open(files[0]))["run_id"])')
 
 python scripts/export_cs_phoc_test_formats.py \
   --project validation-output/cs-phoc.fairmorph \
