@@ -33,6 +33,6 @@ python -m pip install -e dependencies/fairmorph-engine
 
 The authoritative [CS-PHOC reproduction and results guide](docs/CS-PHOC-REPRODUCTION-AND-RESULTS.md) gives the exact run, field-draft registration, dataset-specific export and independent audit commands, including the expected values and limits. Follow those instructions in **new, nonexistent** output directories.
 
-For automated coverage, see [reference validation CI](.github/workflows/cs-phoc-phase-a.yml). A passing technical audit does **not** establish scientific approval or production-readiness; the test exports remain `publication_ready: false`.
+For automated coverage, see [FAIRmorph validation runs](https://github.com/FAIRmorph/fairmorph-validations/actions) and the [validation results overview](cs-phoc/validation/README.md). A passing technical audit does **not** establish scientific approval or production readiness; the test exports remain `publication_ready: false`.
 
 The separate [FAIRmorph Workbench](https://github.com/FAIRmorph/fairmorph-workbench) is not part of this automated test.
