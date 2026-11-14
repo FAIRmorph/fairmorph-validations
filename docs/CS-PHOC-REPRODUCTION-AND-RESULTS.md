@@ -1,6 +1,6 @@
 # CS-PHOC validation: reproduction and interpretation
 
-This is the **reviewer-oriented guide** to the FAIRmorph CS-PHOC test case. It describes what comes from the original research dataset, what FAIRmorph Engine actually executes, which conversions are supplied by this *validation repository*, what the tests prove, and what remains unapproved. You do not need to know the project's internal development “phases” to use this guide.
+This is the **reviewer-oriented guide** to the FAIRmorph CS-PHOC test case. It separates the original research observations, generic Engine processing and dataset-specific validation code, then shows exactly what passed, what remains unapproved and how to reproduce the results. For a concise result overview, begin with the [CS-PHOC validation results](../cs-phoc/validation/README.md).
 
 **Conclusion:** The real-data, dataset-specific **technical proof of concept passed**: immutable source import, generic Engine RUN/2, locally registered field-description drafts, reproducible test exports, and independent content auditing. **Not demonstrated:** complete Workbench operation, generic publication processing for other datasets, independently approved scientific semantics, or a publishable dataset.
 
@@ -78,13 +78,13 @@ FAIRmorph Workbench: NOT invoked or validated by this chain.
 | `cs-phoc/configurations/drafts/pipeline-technical.json` | Generic Engine pipeline template with placeholder resource IDs | **Template**; runner substitutes actual Engine IDs |
 | `cs-phoc/configurations/drafts/dataset-metadata.json` | Proposed dataset title/metadata | **Unapproved draft** |
 | `cs-phoc/configurations/drafts/source-field-definitions.ai-fairmorph.json` | 23 English source-field interpretations, with provenance and caveats | **AI-assisted PoC drafts**, not author-reviewed or formally approved |
-| `cs-phoc/configurations/drafts/c1-c4-test-projection.json` | Bounded rules for site split, ten categories, IDs, representative coordinates and target formats | **Dataset-specific test configuration**, not a general Engine contract |
+| [Dataset-specific test export rules](../cs-phoc/validation/TEST-EXPORTS.md) | Bounded rules for site split, ten categories, IDs, representative coordinates and target formats | **Dataset-specific configuration**, not a general Engine contract |
 | `scripts/run_cs_phoc.py` | Engine import, generic RUN/2 and baseline checks | **Executable technical test** |
 | `scripts/register_cs_phoc_field_drafts.py` | Preflight and separate `--apply` for 23 unreviewed Engine revisions | **Engine registry test**, no approval |
 | `scripts/export_cs_phoc_test_formats.py` | RUN-checked publication-style test files | **Dataset-specific test transformation**, no publication claim |
 | `scripts/audit_cs_phoc_test_exports.py` | Independent inspection of already created files | **Read-only verification** |
-| `cs-phoc/curation/`, `cs-phoc/validation/` | Source analyses, detailed case notes, historical checkpoints | **Supporting evidence**; filenames such as “PHASE-B” reflect development history |
-| `.github/workflows/cs-phoc-phase-a.yml` | Rebuild and audit the whole test in CI | **Automated reproducibility check**; historical filename |
+| [Validation results and evidence](../cs-phoc/validation/README.md) | Results summary, technical test export details and independently audited outputs | **Reader-oriented evidence** with explicit scientific limitations |
+| [Automated validation workflow](https://github.com/FAIRmorph/fairmorph-validations/actions) | Rebuild and audit the full test from pinned sources in CI | **Automated reproducibility check**, not scientific approval |
 
 Generated projects, original source objects, export files and evidence JSON are written to local `validation-output/` or `artifacts/`. These are **not** expected to be committed to Git.
 
@@ -92,7 +92,7 @@ Generated projects, original source objects, export files and evidence JSON are 
 
 These commands are designed for a **fresh clone**. Use Bash in a shell with `python` referring to Python **3.11 or later**, `git`, and package installation access. Start in the root of a clone of `FAIRmorph/fairmorph-validations`. The pinned Engine installation brings its declared dependencies (including Polars). A virtual environment is recommended.
 
-### A. Obtain the exact software and source revision
+### Obtain the exact software and source revision
 
 ```bash
 mkdir -p dependencies
@@ -108,7 +108,7 @@ python -m pip install -e dependencies/fairmorph-engine
 
 **Reproducibility note:** The dataset and Engine are pinned; this repository's `main` is a moving branch. For a frozen historical evaluation, also record or check out the validations repository commit being tested.
 
-### B. Import and run the generic Engine workflow
+### Import and run the generic Engine workflow
 
 ```bash
 python scripts/run_cs_phoc.py \
@@ -118,7 +118,7 @@ python scripts/run_cs_phoc.py \
 
 The runner rejects an existing destination and verifies imported source identities and the pipeline's recorded values. It writes a project-local `validation/phase-a-result.json` and a small root-level `artifacts/phase-a-result.json`. The machine-generated `run_id` must be **read from that output**, not guessed.
 
-### C. Register the field-description drafts (no approvals)
+### Register field-description drafts (no approvals)
 
 ```bash
 python scripts/register_cs_phoc_field_drafts.py \
@@ -128,9 +128,9 @@ python scripts/register_cs_phoc_field_drafts.py \
   --project validation-output/cs-phoc.fairmorph --apply
 ```
 
-The first call is read-only and should print `preflight_passed`. The second registers the 23 immutable, **unreviewed** draft revisions and writes `validation/phase-b-field-drafts.json` inside the project. Do not rerun `--apply` on an already registered project; the script intentionally refuses overwrite.
+The first call is read-only and should print `preflight_passed`. The second registers 23 immutable, **unreviewed** draft revisions and writes a project-local evidence report. Do not rerun `--apply` on an already registered project; the script intentionally refuses overwrite.
 
-### D. Generate three local **test** export formats
+### Generate three local **test** export formats
 
 ```bash
 RUN_ID=$(python -c 'import json; print(json.load(open("artifacts/phase-a-result.json"))["run_id"])')
@@ -153,7 +153,7 @@ This produces:
 
 The output directory must **not exist** before execution. Repetition requires a *new* directory, not an overwrite.
 
-### E. Independently audit those existing files
+### Independently audit the existing exported files
 
 ```bash
 python scripts/audit_cs_phoc_test_exports.py \
@@ -174,7 +174,7 @@ Expected console output includes:
 
 The console also prints the path of the **new** audit JSON. This script reads the originals, source identities, existing project registry/RUN evidence and actual export bytes. It **does not** regenerate or modify exports. The output report path also must not exist.
 
-**For an easier independent reproduction:** Read the CI workflow and its downloadable small audit report from [GitHub Actions](https://github.com/FAIRmorph/fairmorph-validations/actions/workflows/cs-phoc-phase-a.yml). CI reruns on a new project using the pinned Engine and source commit. It retains metadata evidence, not original data or full output files.
+**For an easier independent reproduction:** Use the [validation runs on GitHub Actions](https://github.com/FAIRmorph/fairmorph-validations/actions) and their small downloadable audit reports. CI creates a fresh project using the pinned Engine and source commit; it does not retain original research data or full export files.
 
 ## 5. What passed—and what the numbers prove
 
@@ -219,10 +219,10 @@ The exporter independently compares source category keys/values against the gene
 ## 7. Evidence, provenance and attribution
 
 - [Source-derived baseline JSON](../cs-phoc/validation/source-baseline.json) — independently calculated **expectations**, not generated by the Engine.
-- [Detailed final content audit](../cs-phoc/validation/C4-FINAL-CONTENT-AUDIT.md) — the seven fixed checks and intended assertions.
-- [Technical closure record](../cs-phoc/validation/CS-PHOC-TECHNICAL-CLOSURE.md) — historical CI, GitHub PR, local-run evidence and limitations.
+- [Independent output content audit](../cs-phoc/validation/INDEPENDENT-CONTENT-AUDIT.md) — exact source-to-output checks, including seven fixed examples.
+- [Validation results overview](../cs-phoc/validation/README.md) — essential counts, interpretation and recommended reading order.
 - [Original authors and source licensing](../THIRD-PARTY-NOTICES.md).
-- Small CI evidence: `cs-phoc-phase-a-evidence` and `cs-phoc-c4-audit-report` artifacts on the Actions run (availability is limited by CI retention).
+- Small CI audit reports are attached to eligible [GitHub Actions runs](https://github.com/FAIRmorph/fairmorph-validations/actions), subject to artifact retention.
 
 **How to cite this work:** Cite CS-PHOC / Woodman et al. for the **research dataset and published scientific interpretation**. Cite this repository and the pinned Engine commit for the **technical PoC validation**, not as authors of the original research observations.
 
