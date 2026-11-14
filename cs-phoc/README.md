@@ -13,7 +13,6 @@ The original [US AMLR / CS-PHOC](https://github.com/us-amlr/cs-phoc/tree/64f0b77
 | `configurations/drafts/source-field-definitions.ai-fairmorph.json` | 23 English AI-assisted source-field descriptions with limitations. **Drafts, not reviewed or approved.** |
 | [Test export specification](validation/TEST-EXPORTS.md) | CS-PHOC-specific Event/Occurrence, TSV and GeoJSON transformation rules and technical limitations. |
 | `validation/source-baseline.json` | Source-derived expected row counts and Git blob identities; **not an Engine RUN result**. |
-| `curation/` | Supporting historical source-interpretation and review evidence, retained in Git. |
 | [Validation results](validation/README.md) | Checked outcomes, export specifications, independent audit and interpretation limits. |
 
 ## At a glance
